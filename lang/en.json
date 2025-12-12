@@ -76,8 +76,16 @@
   "NARUTO5E.AtHigherRanks": "At Higher Ranks",
 
   "NARUTO5E.Clan": "Clan",
+  "NARUTO5E.ClanName": "Clan Name",
   "NARUTO5E.ClanAbilities": "Clan Abilities",
   "NARUTO5E.ClanKekkeiGenkai": "Kekkei Genkai",
+  "NARUTO5E.ClanDescription": "Clan Description",
+
+  "NARUTO5E.NinjaBackground": "Ninja Background",
+  "NARUTO5E.Ambition": "Ambition",
+  "NARUTO5E.Drive": "Drive",
+  "NARUTO5E.Goals": "Goals",
+  "NARUTO5E.Fears": "Fears",
 
   "NARUTO5E.NinjaRank": "Ninja Rank",
   "NARUTO5E.RankAcademyStudent": "Academy Student",

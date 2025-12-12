@@ -544,6 +544,12 @@ Hooks.on('renderActorSheet', (app, html, data) => {
       elementalAffinity: null
     };
 
+    // Inject Clan Section
+    injectClanSection(html, actor, ninjaData);
+
+    // Inject Background Section (Ambition, Drive, Goals, Fears)
+    injectBackgroundSection(html, actor, ninjaData);
+
     // Inject Ninja Class Section into the character sheet
     injectNinjaClassSection(html, actor, ninjaData);
 
@@ -555,6 +561,177 @@ Hooks.on('renderActorSheet', (app, html, data) => {
     console.error(`${MODULE_ID} | Error rendering character sheet:`, error);
   }
 });
+
+/**
+ * Inject clan section into character sheet
+ * Displays near the race/species field as clan is central to Naruto lore
+ */
+function injectClanSection(html, actor, ninjaData) {
+  // Find the biography or details section
+  const detailsSection = html.find('.tab[data-tab="details"], .tab[data-tab="biography"], .sheet-body');
+
+  if (detailsSection.length === 0) {
+    console.warn(`${MODULE_ID} | Could not find details tab to inject clan section`);
+    return;
+  }
+
+  console.log(`${MODULE_ID} | Injecting clan section`);
+
+  // Check if section already exists to avoid duplicates
+  if (html.find('.naruto5e-clan-section').length > 0) {
+    console.log(`${MODULE_ID} | Clan section already exists, skipping`);
+    return;
+  }
+
+  // Get clan data from actor flags
+  const clanData = actor.getFlag(MODULE_ID, 'clanData') || {
+    clanName: '',
+    kekkeiGenkai: '',
+    clanDescription: ''
+  };
+
+  const clanSection = `
+    <section class="naruto5e-clan-section">
+      <h3 class="section-title">
+        <i class="fas fa-users"></i>
+        ${game.i18n.localize('NARUTO5E.Clan')}
+      </h3>
+      <div class="naruto5e-clan-content">
+        <div class="form-group">
+          <label>${game.i18n.localize('NARUTO5E.ClanName')}:</label>
+          <input type="text" class="clan-name-input" value="${clanData.clanName}" placeholder="e.g., Uchiha, Hyuga, Uzumaki">
+        </div>
+        <div class="form-group">
+          <label>${game.i18n.localize('NARUTO5E.ClanKekkeiGenkai')}:</label>
+          <input type="text" class="clan-kekkei-genkai-input" value="${clanData.kekkeiGenkai}" placeholder="e.g., Sharingan, Byakugan">
+        </div>
+        <div class="form-group">
+          <label>${game.i18n.localize('NARUTO5E.ClanDescription')}:</label>
+          <textarea class="clan-description-input" rows="3" placeholder="Describe your clan's history and abilities...">${clanData.clanDescription}</textarea>
+        </div>
+      </div>
+    </section>
+  `;
+
+  // Insert at the beginning of details tab or sheet body
+  detailsSection.first().prepend(clanSection);
+
+  // Event listeners for clan data
+  html.find('.clan-name-input').on('change', async (event) => {
+    await actor.setFlag(MODULE_ID, 'clanData', {
+      ...clanData,
+      clanName: event.target.value
+    });
+  });
+
+  html.find('.clan-kekkei-genkai-input').on('change', async (event) => {
+    await actor.setFlag(MODULE_ID, 'clanData', {
+      ...clanData,
+      kekkeiGenkai: event.target.value
+    });
+  });
+
+  html.find('.clan-description-input').on('change', async (event) => {
+    await actor.setFlag(MODULE_ID, 'clanData', {
+      ...clanData,
+      clanDescription: event.target.value
+    });
+  });
+}
+
+/**
+ * Inject background section with narrative fields
+ * Includes Ambition, Drive, Goals, and Fears
+ */
+function injectBackgroundSection(html, actor, ninjaData) {
+  // Find the biography tab
+  const biographyTab = html.find('.tab[data-tab="biography"], .tab[data-tab="details"], .sheet-body');
+
+  if (biographyTab.length === 0) {
+    console.warn(`${MODULE_ID} | Could not find biography tab to inject background section`);
+    return;
+  }
+
+  console.log(`${MODULE_ID} | Injecting background section`);
+
+  // Check if section already exists to avoid duplicates
+  if (html.find('.naruto5e-background-section').length > 0) {
+    console.log(`${MODULE_ID} | Background section already exists, skipping`);
+    return;
+  }
+
+  // Get background data from actor flags
+  const backgroundData = actor.getFlag(MODULE_ID, 'backgroundData') || {
+    ambition: '',
+    drive: '',
+    goals: '',
+    fears: ''
+  };
+
+  const backgroundSection = `
+    <section class="naruto5e-background-section">
+      <h3 class="section-title">
+        <i class="fas fa-book-open"></i>
+        ${game.i18n.localize('NARUTO5E.NinjaBackground')}
+      </h3>
+      <div class="naruto5e-background-content">
+        <div class="form-group">
+          <label>${game.i18n.localize('NARUTO5E.Ambition')}:</label>
+          <textarea class="background-ambition-input" rows="2" placeholder="What drives your character to greatness?">${backgroundData.ambition}</textarea>
+        </div>
+        <div class="form-group">
+          <label>${game.i18n.localize('NARUTO5E.Drive')}:</label>
+          <textarea class="background-drive-input" rows="2" placeholder="What motivates your character day-to-day?">${backgroundData.drive}</textarea>
+        </div>
+        <div class="form-group">
+          <label>${game.i18n.localize('NARUTO5E.Goals')}:</label>
+          <textarea class="background-goals-input" rows="2" placeholder="What does your character hope to achieve?">${backgroundData.goals}</textarea>
+        </div>
+        <div class="form-group">
+          <label>${game.i18n.localize('NARUTO5E.Fears')}:</label>
+          <textarea class="background-fears-input" rows="2" placeholder="What does your character fear most?">${backgroundData.fears}</textarea>
+        </div>
+      </div>
+    </section>
+  `;
+
+  // Insert after clan section or at the beginning
+  const clanSection = html.find('.naruto5e-clan-section');
+  if (clanSection.length > 0) {
+    clanSection.after(backgroundSection);
+  } else {
+    biographyTab.first().prepend(backgroundSection);
+  }
+
+  // Event listeners for background data
+  html.find('.background-ambition-input').on('change', async (event) => {
+    await actor.setFlag(MODULE_ID, 'backgroundData', {
+      ...backgroundData,
+      ambition: event.target.value
+    });
+  });
+
+  html.find('.background-drive-input').on('change', async (event) => {
+    await actor.setFlag(MODULE_ID, 'backgroundData', {
+      ...backgroundData,
+      drive: event.target.value
+    });
+  });
+
+  html.find('.background-goals-input').on('change', async (event) => {
+    await actor.setFlag(MODULE_ID, 'backgroundData', {
+      ...backgroundData,
+      goals: event.target.value
+    });
+  });
+
+  html.find('.background-fears-input').on('change', async (event) => {
+    await actor.setFlag(MODULE_ID, 'backgroundData', {
+      ...backgroundData,
+      fears: event.target.value
+    });
+  });
+}
 
 /**
  * Inject ninja class information section into character sheet

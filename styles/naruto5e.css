@@ -556,6 +556,139 @@
 }
 
 /* ========================================
+   Clan Section
+   ======================================== */
+
+.naruto5e-clan-section {
+  background: linear-gradient(180deg, rgba(139, 69, 19, 0.05) 0%, rgba(139, 69, 19, 0.02) 100%);
+  border: 1px solid var(--naruto5e-border);
+  border-left: 4px solid var(--naruto5e-earth);
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+.naruto5e-clan-section .section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.1em;
+  font-weight: bold;
+  color: var(--naruto5e-dark-blue);
+  margin-bottom: 15px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--naruto5e-earth);
+}
+
+.naruto5e-clan-section .section-title i {
+  color: var(--naruto5e-earth);
+}
+
+.naruto5e-clan-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.naruto5e-clan-content .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.naruto5e-clan-content label {
+  font-weight: 600;
+  color: var(--naruto5e-dark-blue);
+  font-size: 0.95em;
+}
+
+.naruto5e-clan-content input,
+.naruto5e-clan-content textarea {
+  padding: 8px 10px;
+  border: 1px solid var(--naruto5e-border);
+  border-radius: 4px;
+  font-size: 0.95em;
+  background: white;
+}
+
+.naruto5e-clan-content input:focus,
+.naruto5e-clan-content textarea:focus {
+  outline: none;
+  border-color: var(--naruto5e-earth);
+  box-shadow: 0 0 0 2px rgba(139, 69, 19, 0.2);
+}
+
+.naruto5e-clan-content textarea {
+  resize: vertical;
+  font-family: inherit;
+  line-height: 1.4;
+}
+
+/* ========================================
+   Background Section
+   ======================================== */
+
+.naruto5e-background-section {
+  background: linear-gradient(180deg, rgba(255, 107, 53, 0.05) 0%, rgba(255, 107, 53, 0.02) 100%);
+  border: 1px solid var(--naruto5e-border);
+  border-left: 4px solid var(--naruto5e-orange);
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+.naruto5e-background-section .section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.1em;
+  font-weight: bold;
+  color: var(--naruto5e-dark-blue);
+  margin-bottom: 15px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--naruto5e-orange);
+}
+
+.naruto5e-background-section .section-title i {
+  color: var(--naruto5e-orange);
+}
+
+.naruto5e-background-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.naruto5e-background-content .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.naruto5e-background-content label {
+  font-weight: 600;
+  color: var(--naruto5e-dark-blue);
+  font-size: 0.95em;
+}
+
+.naruto5e-background-content textarea {
+  padding: 8px 10px;
+  border: 1px solid var(--naruto5e-border);
+  border-radius: 4px;
+  font-size: 0.95em;
+  background: white;
+  resize: vertical;
+  font-family: inherit;
+  line-height: 1.4;
+}
+
+.naruto5e-background-content textarea:focus {
+  outline: none;
+  border-color: var(--naruto5e-orange);
+  box-shadow: 0 0 0 2px rgba(255, 107, 53, 0.2);
+}
+
+/* ========================================
    Jutsu Section
    ======================================== */
 
