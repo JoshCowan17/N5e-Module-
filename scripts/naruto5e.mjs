@@ -387,30 +387,30 @@ function registerItemSheetChanges() {
 
 /**
  * Display welcome dialog to GM
+ * Uses ApplicationV2 API (DialogV2) for Foundry VTT v12+
  */
-function showWelcomeDialog() {
-  new Dialog({
-    title: game.i18n.localize('NARUTO5E.WelcomeTitle'),
-    content: `
-      <div class="naruto5e-welcome">
-        <h2>${game.i18n.localize('NARUTO5E.WelcomeHeader')}</h2>
-        <p>${game.i18n.localize('NARUTO5E.WelcomeMessage')}</p>
-        <ul>
-          <li><strong>${game.i18n.localize('NARUTO5E.WelcomeFeature1')}</strong></li>
-          <li><strong>${game.i18n.localize('NARUTO5E.WelcomeFeature2')}</strong></li>
-          <li><strong>${game.i18n.localize('NARUTO5E.WelcomeFeature3')}</strong></li>
-          <li><strong>${game.i18n.localize('NARUTO5E.WelcomeFeature4')}</strong></li>
-        </ul>
-      </div>
-    `,
-    buttons: {
-      ok: {
-        icon: '<i class="fas fa-check"></i>',
-        label: game.i18n.localize('NARUTO5E.WelcomeButton')
-      }
-    },
-    default: 'ok'
-  }).render(true);
+async function showWelcomeDialog() {
+  const content = `
+    <div class="naruto5e-welcome">
+      <h2>${game.i18n.localize('NARUTO5E.WelcomeHeader')}</h2>
+      <p>${game.i18n.localize('NARUTO5E.WelcomeMessage')}</p>
+      <ul>
+        <li><strong>${game.i18n.localize('NARUTO5E.WelcomeFeature1')}</strong></li>
+        <li><strong>${game.i18n.localize('NARUTO5E.WelcomeFeature2')}</strong></li>
+        <li><strong>${game.i18n.localize('NARUTO5E.WelcomeFeature3')}</strong></li>
+        <li><strong>${game.i18n.localize('NARUTO5E.WelcomeFeature4')}</strong></li>
+      </ul>
+    </div>
+  `;
+
+  await foundry.applications.api.DialogV2.prompt({
+    window: { title: game.i18n.localize('NARUTO5E.WelcomeTitle') },
+    content: content,
+    ok: {
+      label: game.i18n.localize('NARUTO5E.WelcomeButton'),
+      icon: 'fas fa-check'
+    }
+  });
 }
 
 /**
