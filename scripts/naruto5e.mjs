@@ -520,29 +520,40 @@ async function showWelcomeDialog() {
  * Adds chakra display, ninja class info, and jutsu management UI elements
  */
 Hooks.on('renderActorSheet', (app, html, data) => {
-  if (!game.settings.get(MODULE_ID, 'useChakraSystem')) return;
+  try {
+    if (!game.settings.get(MODULE_ID, 'useChakraSystem')) {
+      console.log(`${MODULE_ID} | Chakra system disabled, skipping character sheet modifications`);
+      return;
+    }
 
-  const actor = app.actor;
-  if (actor.type !== 'character') return;
+    const actor = app.actor;
+    if (actor.type !== 'character') return;
 
-  // Add chakra-themed styling
-  html.find('.sheet-header').addClass('naruto5e-header');
+    console.log(`${MODULE_ID} | Rendering character sheet for ${actor.name}`);
 
-  // Get or initialize ninja class data from actor flags
-  const ninjaData = actor.getFlag(MODULE_ID, 'ninjaData') || {
-    ninjaClass: null,
-    subclass: null,
-    chakraCurrent: 0,
-    chakraMax: 0,
-    knownJutsu: [],
-    elementalAffinity: null
-  };
+    // Add chakra-themed styling
+    html.find('.sheet-header').addClass('naruto5e-header');
 
-  // Inject Ninja Class Section into the character sheet
-  injectNinjaClassSection(html, actor, ninjaData);
+    // Get or initialize ninja class data from actor flags
+    const ninjaData = actor.getFlag(MODULE_ID, 'ninjaData') || {
+      ninjaClass: null,
+      subclass: null,
+      chakraCurrent: 0,
+      chakraMax: 0,
+      knownJutsu: [],
+      elementalAffinity: null
+    };
 
-  // Inject Jutsu Management Section
-  injectJutsuSection(html, actor, ninjaData);
+    // Inject Ninja Class Section into the character sheet
+    injectNinjaClassSection(html, actor, ninjaData);
+
+    // Inject Jutsu Management Section
+    injectJutsuSection(html, actor, ninjaData);
+
+    console.log(`${MODULE_ID} | Character sheet modifications complete`);
+  } catch (error) {
+    console.error(`${MODULE_ID} | Error rendering character sheet:`, error);
+  }
 });
 
 /**
@@ -552,7 +563,18 @@ function injectNinjaClassSection(html, actor, ninjaData) {
   // Find a good place to insert - after the header or in the features tab
   const featuresTab = html.find('.tab[data-tab="features"], .sheet-body');
 
-  if (featuresTab.length === 0) return;
+  if (featuresTab.length === 0) {
+    console.warn(`${MODULE_ID} | Could not find features tab or sheet body to inject ninja class section`);
+    return;
+  }
+
+  console.log(`${MODULE_ID} | Injecting ninja class section`);
+
+  // Check if section already exists to avoid duplicates
+  if (html.find('.naruto5e-class-section').length > 0) {
+    console.log(`${MODULE_ID} | Ninja class section already exists, skipping`);
+    return;
+  }
 
   // Build class selection dropdown options
   const classOptions = Object.entries(NINJA_CLASSES).map(([key, cls]) =>
@@ -688,7 +710,18 @@ function injectJutsuSection(html, actor, ninjaData) {
   // Find spells/features section to add jutsu display
   const spellsTab = html.find('.tab[data-tab="spells"], .spellbook, .sheet-body');
 
-  if (spellsTab.length === 0) return;
+  if (spellsTab.length === 0) {
+    console.warn(`${MODULE_ID} | Could not find spells tab or sheet body to inject jutsu section`);
+    return;
+  }
+
+  console.log(`${MODULE_ID} | Injecting jutsu section`);
+
+  // Check if section already exists to avoid duplicates
+  if (html.find('.naruto5e-jutsu-section').length > 0) {
+    console.log(`${MODULE_ID} | Jutsu section already exists, skipping`);
+    return;
+  }
 
   // Get actor's spell items that have naruto5e flags (these are jutsu)
   const jutsuItems = actor.items.filter(item =>

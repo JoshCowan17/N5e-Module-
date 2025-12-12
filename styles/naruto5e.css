@@ -203,6 +203,11 @@
   color: #333;
 }
 
+.chakra-nature.non-elemental {
+  background: linear-gradient(135deg, #808080 0%, #a9a9a9 100%);
+  color: white;
+}
+
 /* ========================================
    Clan Display
    ======================================== */
