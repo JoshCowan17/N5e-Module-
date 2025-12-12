@@ -42,46 +42,74 @@
   ],
   "packs": [
     {
-      "name": "jutsu-e-rank",
-      "label": "Jutsu (E-Rank)",
+      "name": "ninjutsu-non-elemental",
+      "label": "Ninjutsu - Non-Elemental",
       "type": "Item",
       "system": "dnd5e",
-      "path": "packs/jutsu-e-rank"
+      "path": "packs/ninjutsu-non-elemental"
     },
     {
-      "name": "jutsu-d-rank",
-      "label": "Jutsu (D-Rank)",
+      "name": "ninjutsu-earth",
+      "label": "Ninjutsu - Earth Release",
       "type": "Item",
       "system": "dnd5e",
-      "path": "packs/jutsu-d-rank"
+      "path": "packs/ninjutsu-earth"
     },
     {
-      "name": "jutsu-c-rank",
-      "label": "Jutsu (C-Rank)",
+      "name": "ninjutsu-wind",
+      "label": "Ninjutsu - Wind Release",
       "type": "Item",
       "system": "dnd5e",
-      "path": "packs/jutsu-c-rank"
+      "path": "packs/ninjutsu-wind"
     },
     {
-      "name": "jutsu-b-rank",
-      "label": "Jutsu (B-Rank)",
+      "name": "ninjutsu-fire",
+      "label": "Ninjutsu - Fire Release",
       "type": "Item",
       "system": "dnd5e",
-      "path": "packs/jutsu-b-rank"
+      "path": "packs/ninjutsu-fire"
     },
     {
-      "name": "jutsu-a-rank",
-      "label": "Jutsu (A-Rank)",
+      "name": "ninjutsu-water",
+      "label": "Ninjutsu - Water Release",
       "type": "Item",
       "system": "dnd5e",
-      "path": "packs/jutsu-a-rank"
+      "path": "packs/ninjutsu-water"
     },
     {
-      "name": "jutsu-s-rank",
-      "label": "Jutsu (S-Rank)",
+      "name": "ninjutsu-lightning",
+      "label": "Ninjutsu - Lightning Release",
       "type": "Item",
       "system": "dnd5e",
-      "path": "packs/jutsu-s-rank"
+      "path": "packs/ninjutsu-lightning"
+    },
+    {
+      "name": "summoning-jutsu",
+      "label": "Summoning Jutsu",
+      "type": "Item",
+      "system": "dnd5e",
+      "path": "packs/summoning-jutsu"
+    },
+    {
+      "name": "genjutsu",
+      "label": "Genjutsu",
+      "type": "Item",
+      "system": "dnd5e",
+      "path": "packs/genjutsu"
+    },
+    {
+      "name": "taijutsu",
+      "label": "Taijutsu",
+      "type": "Item",
+      "system": "dnd5e",
+      "path": "packs/taijutsu"
+    },
+    {
+      "name": "bukijutsu",
+      "label": "Bukijutsu",
+      "type": "Item",
+      "system": "dnd5e",
+      "path": "packs/bukijutsu"
     },
     {
       "name": "clans",
