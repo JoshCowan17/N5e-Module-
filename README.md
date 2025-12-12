@@ -95,15 +95,15 @@ Each jutsu can have a special mechanic slot. Elemental ninjutsu default to their
 
 | Element | Default Mechanic |
 |---------|------------------|
-| Fire (Katon) | Ignite |
-| Water (Suiton) | Drench |
-| Wind (Futon) | Gale |
-| Earth (Doton) | Fortify |
+| Fire (Katon) | Burned |
+| Water (Suiton) | Near |
+| Wind (Futon) | Swirl |
+| Earth (Doton) | Quake Shards |
 | Lightning (Raiton) | Overcharge |
 
 **Usage:** Set `specialMechanic` in jutsu flags to:
 - `"default"` - Uses element's default mechanic
-- `"ignite"`, `"drench"`, `"gale"`, `"fortify"`, `"overcharge"` - Specific mechanic
+- `"burned"`, `"near"`, `"swirl"`, `"quake shards"`, `"overcharge"` - Specific mechanic
 - `"none"` - No special mechanic (for non-elemental jutsu)
 
 ### Components
