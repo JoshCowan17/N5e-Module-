@@ -1,0 +1,715 @@
+{
+  "_readme": "Sample jutsu items for Naruto 5e module. Import these into Foundry VTT or use as templates.",
+
+  "jutsu": [
+    {
+      "name": "Lightning Release: Chidori",
+      "type": "spell",
+      "img": "icons/magic/lightning/bolt-strike-blue.webp",
+      "system": {
+        "description": {
+          "value": "<p>This powerful assassination technique focuses lightning Chakra into one of your hands, which will be unable to hold items while charged, but can still be used to make hand seals without harm. You do not need to spend chakra to maintain concentration with this jutsu.</p><p>As an action on your next turn, you can use your action to make a <strong>Melee Ninjutsu Attack</strong> on a target creature within range.</p><p>On a hit, the target creature takes <strong>5d10 Lightning Damage</strong> and this jutsu ends. This Jutsu has a <strong>+1 critical threat range</strong>.</p><p><strong><em>Overcharge.</em></strong> When you cast this jutsu with its listed casting time, you can choose to spend your Bonus Action or Reaction to overcharge its effects. When you do, this jutsu evolves in power, becoming the <strong><em>Raikiri</em></strong>, gaining the following benefits until this jutsu ends; Bonus +20 speed, 1d4 bonus to hit, and on a critical hit, increases damage die by 1 step.</p><p><strong>At Higher Ranks:</strong> If this Jutsu is upcasted to at least B-Rank you immediately perform the Melee Ninjutsu Attack instead of waiting till your next turn. For each rank above C-Rank, increase the cost by 3, increasing the damage done by 2d10 and Critical threat range by +1.</p>",
+          "chat": ""
+        },
+        "source": {
+          "custom": "Naruto 5e"
+        },
+        "activation": {
+          "type": "action",
+          "cost": 1,
+          "condition": ""
+        },
+        "duration": {
+          "value": "1",
+          "units": "minute"
+        },
+        "cover": null,
+        "crpirical": null,
+        "target": {
+          "value": 1,
+          "width": null,
+          "units": "",
+          "type": "creature",
+          "prompt": true
+        },
+        "range": {
+          "value": 5,
+          "long": null,
+          "units": "ft"
+        },
+        "uses": {
+          "value": null,
+          "max": "",
+          "per": null,
+          "recovery": "",
+          "prompt": true
+        },
+        "consume": {
+          "type": "",
+          "target": null,
+          "amount": null,
+          "scale": false
+        },
+        "ability": "",
+        "actionType": "msak",
+        "attack": {
+          "bonus": "",
+          "flat": false
+        },
+        "chatFlavor": "",
+        "critical": {
+          "threshold": 19,
+          "damage": ""
+        },
+        "damage": {
+          "parts": [
+            ["5d10", "lightning"]
+          ],
+          "versatile": ""
+        },
+        "formula": "",
+        "save": {
+          "ability": "",
+          "dc": null,
+          "scaling": "spell"
+        },
+        "level": 2,
+        "school": "evo",
+        "properties": ["concentration"],
+        "materials": {
+          "value": "",
+          "consumed": false,
+          "cost": 0,
+          "supply": 0
+        },
+        "preparation": {
+          "mode": "prepared",
+          "prepared": false
+        },
+        "scaling": {
+          "mode": "level",
+          "formula": "2d10"
+        }
+      },
+      "flags": {
+        "naruto5e": {
+          "classification": "ninjutsu",
+          "rank": "c",
+          "chakraNature": "lightning",
+          "chakraCost": 8,
+          "components": ["HS", "CM"],
+          "keywords": ["clash", "concentration"],
+          "handSeals": ["ox", "hare", "monkey"],
+          "overcharge": {
+            "name": "Raikiri",
+            "bonusSpeed": 20,
+            "bonusToHit": "1d4",
+            "criticalDamageBonus": "1 step"
+          },
+          "higherRanks": {
+            "bRank": {
+              "effect": "Immediately perform the Melee Ninjutsu Attack",
+              "additionalCost": 3,
+              "additionalDamage": "2d10",
+              "criticalBonus": 1
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Fire Release: Fireball Jutsu",
+      "type": "spell",
+      "img": "icons/magic/fire/projectile-fireball-orange-yellow.webp",
+      "system": {
+        "description": {
+          "value": "<p>After performing the necessary hand seals, you inhale deeply and exhale a massive orb of roaring fire at your target.</p><p>Each creature in a 20-foot-radius sphere centered on a point you choose within range must make a <strong>Dexterity saving throw</strong>. A target takes <strong>8d6 fire damage</strong> on a failed save, or half as much damage on a successful one.</p><p>The fire spreads around corners. It ignites flammable objects in the area that aren't being worn or carried.</p><p><strong><em>Ignite.</em></strong> When you cast this jutsu with its listed casting time, you can choose to spend your Bonus Action or Reaction to overcharge its effects. When you do, targets that fail their saving throw catch fire, taking 1d6 fire damage at the start of each of their turns until they use an action to extinguish the flames.</p><p><strong>At Higher Ranks:</strong> When you cast this jutsu at a higher rank, the damage increases by 1d6 for each rank above C-Rank.</p>",
+          "chat": ""
+        },
+        "source": {
+          "custom": "Naruto 5e"
+        },
+        "activation": {
+          "type": "action",
+          "cost": 1,
+          "condition": ""
+        },
+        "duration": {
+          "value": null,
+          "units": "inst"
+        },
+        "target": {
+          "value": 20,
+          "width": null,
+          "units": "ft",
+          "type": "sphere",
+          "prompt": true
+        },
+        "range": {
+          "value": 150,
+          "long": null,
+          "units": "ft"
+        },
+        "uses": {
+          "value": null,
+          "max": "",
+          "per": null,
+          "recovery": "",
+          "prompt": true
+        },
+        "ability": "",
+        "actionType": "save",
+        "attack": {
+          "bonus": "",
+          "flat": false
+        },
+        "chatFlavor": "",
+        "critical": {
+          "threshold": null,
+          "damage": ""
+        },
+        "damage": {
+          "parts": [
+            ["8d6", "fire"]
+          ],
+          "versatile": ""
+        },
+        "formula": "",
+        "save": {
+          "ability": "dex",
+          "dc": null,
+          "scaling": "spell"
+        },
+        "level": 2,
+        "school": "evo",
+        "properties": [],
+        "materials": {
+          "value": "",
+          "consumed": false,
+          "cost": 0,
+          "supply": 0
+        },
+        "preparation": {
+          "mode": "prepared",
+          "prepared": false
+        },
+        "scaling": {
+          "mode": "level",
+          "formula": "1d6"
+        }
+      },
+      "flags": {
+        "naruto5e": {
+          "classification": "ninjutsu",
+          "rank": "c",
+          "chakraNature": "fire",
+          "chakraCost": 6,
+          "components": ["HS", "CM"],
+          "keywords": ["aoe"],
+          "handSeals": ["serpent", "ram", "monkey", "boar", "horse", "tiger"],
+          "overcharge": {
+            "name": "Ignite",
+            "effect": "Targets catch fire for 1d6 damage per turn"
+          }
+        }
+      }
+    },
+    {
+      "name": "Shadow Clone Jutsu",
+      "type": "spell",
+      "img": "icons/magic/symbols/runes-star-pentagon-orange.webp",
+      "system": {
+        "description": {
+          "value": "<p>You create shadow clones of yourself that are physical copies capable of independent action.</p><p>You create <strong>1d4 shadow clones</strong> of yourself in unoccupied spaces within 30 feet of you. Each clone has the following properties:</p><ul><li>AC equal to 10 + your Dexterity modifier</li><li>1 hit point</li><li>Speed equal to yours</li><li>Can take the Attack, Dash, Disengage, Dodge, or Help action</li><li>Attacks use your attack bonus and deal 1d4 + your ability modifier damage</li></ul><p>The clones act on your turn and last for 1 minute or until destroyed. When a clone is destroyed, it disappears in a puff of smoke.</p><p><strong>At Higher Ranks:</strong> When you cast this jutsu at a higher rank, you create additional clones: B-Rank (2d4), A-Rank (3d4), S-Rank (4d4).</p>",
+          "chat": ""
+        },
+        "source": {
+          "custom": "Naruto 5e"
+        },
+        "activation": {
+          "type": "action",
+          "cost": 1,
+          "condition": ""
+        },
+        "duration": {
+          "value": "1",
+          "units": "minute"
+        },
+        "target": {
+          "value": null,
+          "width": null,
+          "units": "self",
+          "type": "self",
+          "prompt": false
+        },
+        "range": {
+          "value": 30,
+          "long": null,
+          "units": "ft"
+        },
+        "uses": {
+          "value": null,
+          "max": "",
+          "per": null,
+          "recovery": "",
+          "prompt": true
+        },
+        "ability": "",
+        "actionType": "util",
+        "chatFlavor": "",
+        "damage": {
+          "parts": [],
+          "versatile": ""
+        },
+        "formula": "1d4",
+        "save": {
+          "ability": "",
+          "dc": null,
+          "scaling": "spell"
+        },
+        "level": 1,
+        "school": "con",
+        "properties": ["concentration"],
+        "preparation": {
+          "mode": "prepared",
+          "prepared": false
+        },
+        "scaling": {
+          "mode": "level",
+          "formula": "1d4"
+        }
+      },
+      "flags": {
+        "naruto5e": {
+          "classification": "ninjutsu",
+          "rank": "b",
+          "chakraNature": "non-elemental",
+          "chakraCost": 10,
+          "components": ["HS", "CM"],
+          "keywords": ["concentration"],
+          "handSeals": ["ram", "serpent", "tiger"],
+          "isForbidden": true
+        }
+      }
+    },
+    {
+      "name": "Substitution Jutsu",
+      "type": "spell",
+      "img": "icons/magic/movement/trail-streaks-orange.webp",
+      "system": {
+        "description": {
+          "value": "<p>A basic but essential ninja technique that allows you to replace yourself with a nearby object at the moment of attack.</p><p>When you are hit by an attack or fail a Dexterity saving throw, you can use your <strong>reaction</strong> to instantly switch places with a log, rock, or similar object within 30 feet, causing the attack to hit the object instead.</p><p>You appear in an unoccupied space within 5 feet of where the object was. The object you leave behind has an AC of 10 and 1 hit point.</p>",
+          "chat": ""
+        },
+        "source": {
+          "custom": "Naruto 5e"
+        },
+        "activation": {
+          "type": "reaction",
+          "cost": 1,
+          "condition": "When hit by an attack or failing a Dexterity saving throw"
+        },
+        "duration": {
+          "value": null,
+          "units": "inst"
+        },
+        "target": {
+          "value": null,
+          "width": null,
+          "units": "self",
+          "type": "self",
+          "prompt": false
+        },
+        "range": {
+          "value": 30,
+          "long": null,
+          "units": "ft"
+        },
+        "uses": {
+          "value": null,
+          "max": "",
+          "per": null,
+          "recovery": "",
+          "prompt": true
+        },
+        "ability": "",
+        "actionType": "util",
+        "chatFlavor": "",
+        "damage": {
+          "parts": [],
+          "versatile": ""
+        },
+        "formula": "",
+        "save": {
+          "ability": "",
+          "dc": null,
+          "scaling": "spell"
+        },
+        "level": 0,
+        "school": "con",
+        "properties": [],
+        "preparation": {
+          "mode": "prepared",
+          "prepared": false
+        }
+      },
+      "flags": {
+        "naruto5e": {
+          "classification": "ninjutsu",
+          "rank": "e",
+          "chakraNature": "non-elemental",
+          "chakraCost": 1,
+          "components": ["HS"],
+          "keywords": [],
+          "handSeals": ["ram", "boar", "ox", "dog", "serpent"]
+        }
+      }
+    },
+    {
+      "name": "Rasengan",
+      "type": "spell",
+      "img": "icons/magic/air/wind-vortex-swirl-blue.webp",
+      "system": {
+        "description": {
+          "value": "<p>You form a spiraling sphere of pure chakra in your palm, creating one of the most iconic and powerful techniques.</p><p>Make a <strong>melee ninjutsu attack</strong> against a creature within reach. On a hit, the target takes <strong>6d8 force damage</strong> and must succeed on a <strong>Strength saving throw</strong> or be pushed 15 feet away from you and knocked prone.</p><p>The Rasengan requires no hand seals but demands exceptional chakra control to form and maintain.</p><p><strong>At Higher Ranks:</strong> When you cast this jutsu at a higher rank, the damage increases by 2d8 for each rank above A-Rank, and the push distance increases by 5 feet.</p>",
+          "chat": ""
+        },
+        "source": {
+          "custom": "Naruto 5e"
+        },
+        "activation": {
+          "type": "action",
+          "cost": 1,
+          "condition": ""
+        },
+        "duration": {
+          "value": null,
+          "units": "inst"
+        },
+        "target": {
+          "value": 1,
+          "width": null,
+          "units": "",
+          "type": "creature",
+          "prompt": true
+        },
+        "range": {
+          "value": 5,
+          "long": null,
+          "units": "ft"
+        },
+        "uses": {
+          "value": null,
+          "max": "",
+          "per": null,
+          "recovery": "",
+          "prompt": true
+        },
+        "ability": "",
+        "actionType": "msak",
+        "attack": {
+          "bonus": "",
+          "flat": false
+        },
+        "chatFlavor": "",
+        "critical": {
+          "threshold": null,
+          "damage": ""
+        },
+        "damage": {
+          "parts": [
+            ["6d8", "force"]
+          ],
+          "versatile": ""
+        },
+        "formula": "",
+        "save": {
+          "ability": "str",
+          "dc": null,
+          "scaling": "spell"
+        },
+        "level": 4,
+        "school": "evo",
+        "properties": [],
+        "preparation": {
+          "mode": "prepared",
+          "prepared": false
+        },
+        "scaling": {
+          "mode": "level",
+          "formula": "2d8"
+        }
+      },
+      "flags": {
+        "naruto5e": {
+          "classification": "ninjutsu",
+          "rank": "a",
+          "chakraNature": "non-elemental",
+          "chakraCost": 12,
+          "components": ["CM"],
+          "keywords": ["melee"],
+          "handSeals": [],
+          "noHandSeals": true,
+          "secondaryEffect": {
+            "save": "str",
+            "onFail": "Pushed 15 feet and knocked prone"
+          }
+        }
+      }
+    },
+    {
+      "name": "Water Release: Water Dragon Jutsu",
+      "type": "spell",
+      "img": "icons/magic/water/elemental-water.webp",
+      "system": {
+        "description": {
+          "value": "<p>You shape a large amount of water into a giant dragon that crashes into your enemies.</p><p>A dragon-shaped blast of water erupts in a 60-foot line that is 10 feet wide. Each creature in the line must make a <strong>Dexterity saving throw</strong>. A creature takes <strong>8d8 bludgeoning damage</strong> on a failed save, or half as much on a successful one.</p><p>The water then crashes to the ground, extinguishing unprotected flames and leaving the area as difficult terrain until the start of your next turn.</p><p><strong><em>Drench.</em></strong> When you cast this jutsu with its listed casting time, you can spend your Bonus Action or Reaction to overcharge its effects. Creatures that fail their saving throw become soaked, gaining vulnerability to lightning damage and resistance to fire damage until the end of their next turn.</p>",
+          "chat": ""
+        },
+        "source": {
+          "custom": "Naruto 5e"
+        },
+        "activation": {
+          "type": "action",
+          "cost": 1,
+          "condition": ""
+        },
+        "duration": {
+          "value": null,
+          "units": "inst"
+        },
+        "target": {
+          "value": 60,
+          "width": 10,
+          "units": "ft",
+          "type": "line",
+          "prompt": true
+        },
+        "range": {
+          "value": null,
+          "long": null,
+          "units": "self"
+        },
+        "uses": {
+          "value": null,
+          "max": "",
+          "per": null,
+          "recovery": "",
+          "prompt": true
+        },
+        "ability": "",
+        "actionType": "save",
+        "chatFlavor": "",
+        "damage": {
+          "parts": [
+            ["8d8", "bludgeoning"]
+          ],
+          "versatile": ""
+        },
+        "formula": "",
+        "save": {
+          "ability": "dex",
+          "dc": null,
+          "scaling": "spell"
+        },
+        "level": 3,
+        "school": "evo",
+        "properties": [],
+        "preparation": {
+          "mode": "prepared",
+          "prepared": false
+        },
+        "scaling": {
+          "mode": "level",
+          "formula": "2d8"
+        }
+      },
+      "flags": {
+        "naruto5e": {
+          "classification": "ninjutsu",
+          "rank": "b",
+          "chakraNature": "water",
+          "chakraCost": 10,
+          "components": ["HS", "CM"],
+          "keywords": ["aoe"],
+          "handSeals": ["ox", "monkey", "hare", "rat", "boar", "bird", "ox", "horse", "bird", "rat", "tiger", "dog", "tiger", "serpent", "ox", "ram", "serpent", "boar", "ram", "rat", "monkey", "bird", "dragon", "bird", "ox", "horse", "ram", "tiger", "serpent", "rat", "monkey", "hare", "boar", "dragon", "ram", "rat", "ox", "monkey", "bird", "rat", "boar", "serpent"],
+          "overcharge": {
+            "name": "Drench",
+            "effect": "Targets gain vulnerability to lightning and resistance to fire"
+          },
+          "requiresWaterSource": true
+        }
+      }
+    },
+    {
+      "name": "Leaf Hurricane",
+      "type": "spell",
+      "img": "icons/skills/melee/strike-flail-destructive-yellow.webp",
+      "system": {
+        "description": {
+          "value": "<p>A powerful spinning kick technique that uses pure speed and physical prowess.</p><p>Make a <strong>melee taijutsu attack</strong> against a creature within reach. On a hit, the target takes <strong>3d10 bludgeoning damage</strong>. You can then immediately make a second attack against the same target or a different creature within 5 feet of the original target. The second attack deals <strong>2d10 bludgeoning damage</strong> on a hit.</p><p><strong>At Higher Ranks:</strong> When you use this technique at a higher rank, add 1d10 to both attacks for each rank above D-Rank.</p>",
+          "chat": ""
+        },
+        "source": {
+          "custom": "Naruto 5e"
+        },
+        "activation": {
+          "type": "action",
+          "cost": 1,
+          "condition": ""
+        },
+        "duration": {
+          "value": null,
+          "units": "inst"
+        },
+        "target": {
+          "value": 1,
+          "width": null,
+          "units": "",
+          "type": "creature",
+          "prompt": true
+        },
+        "range": {
+          "value": 5,
+          "long": null,
+          "units": "ft"
+        },
+        "uses": {
+          "value": null,
+          "max": "",
+          "per": null,
+          "recovery": "",
+          "prompt": true
+        },
+        "ability": "str",
+        "actionType": "mwak",
+        "attack": {
+          "bonus": "",
+          "flat": false
+        },
+        "chatFlavor": "",
+        "damage": {
+          "parts": [
+            ["3d10", "bludgeoning"]
+          ],
+          "versatile": "2d10"
+        },
+        "formula": "",
+        "save": {
+          "ability": "",
+          "dc": null,
+          "scaling": "spell"
+        },
+        "level": 1,
+        "school": "evo",
+        "properties": [],
+        "preparation": {
+          "mode": "prepared",
+          "prepared": false
+        },
+        "scaling": {
+          "mode": "level",
+          "formula": "1d10"
+        }
+      },
+      "flags": {
+        "naruto5e": {
+          "classification": "taijutsu",
+          "rank": "d",
+          "chakraNature": "non-elemental",
+          "chakraCost": 2,
+          "components": [],
+          "keywords": ["melee"],
+          "handSeals": [],
+          "noHandSeals": true,
+          "extraAttack": {
+            "damage": "2d10",
+            "range": 5
+          }
+        }
+      }
+    },
+    {
+      "name": "Genjutsu: Demonic Illusion - Hell Viewing",
+      "type": "spell",
+      "img": "icons/magic/perception/eye-ringed-glow-angry-red.webp",
+      "system": {
+        "description": {
+          "value": "<p>You trap a creature in a terrifying illusion, making them experience their worst fears.</p><p>Choose a creature you can see within range. The target must succeed on a <strong>Wisdom saving throw</strong> or become <strong>frightened</strong> of you for the duration. While frightened, the target sees illusory images of their deepest fears and must use its movement to move away from you by the safest available route.</p><p>At the end of each of its turns, the target can make a Wisdom saving throw, ending the effect on a success. The target has advantage on this save if it takes damage.</p><p><strong>At Higher Ranks:</strong> When you cast this genjutsu at a higher rank, you can target one additional creature for each rank above D-Rank.</p>",
+          "chat": ""
+        },
+        "source": {
+          "custom": "Naruto 5e"
+        },
+        "activation": {
+          "type": "action",
+          "cost": 1,
+          "condition": ""
+        },
+        "duration": {
+          "value": "1",
+          "units": "minute"
+        },
+        "target": {
+          "value": 1,
+          "width": null,
+          "units": "",
+          "type": "creature",
+          "prompt": true
+        },
+        "range": {
+          "value": 60,
+          "long": null,
+          "units": "ft"
+        },
+        "uses": {
+          "value": null,
+          "max": "",
+          "per": null,
+          "recovery": "",
+          "prompt": true
+        },
+        "ability": "",
+        "actionType": "save",
+        "chatFlavor": "",
+        "damage": {
+          "parts": [],
+          "versatile": ""
+        },
+        "formula": "",
+        "save": {
+          "ability": "wis",
+          "dc": null,
+          "scaling": "spell"
+        },
+        "level": 1,
+        "school": "ill",
+        "properties": ["concentration"],
+        "preparation": {
+          "mode": "prepared",
+          "prepared": false
+        },
+        "scaling": {
+          "mode": "level",
+          "formula": ""
+        }
+      },
+      "flags": {
+        "naruto5e": {
+          "classification": "genjutsu",
+          "rank": "d",
+          "chakraNature": "yin",
+          "chakraCost": 3,
+          "components": ["HS"],
+          "keywords": ["concentration"],
+          "handSeals": ["serpent", "rat"],
+          "condition": "frightened",
+          "overcharge": {
+            "name": "Illusion",
+            "effect": "Target has disadvantage on first saving throw"
+          }
+        }
+      }
+    }
+  ]
+}
