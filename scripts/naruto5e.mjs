@@ -229,6 +229,105 @@ const HAND_SEALS = {
 };
 
 /**
+ * Ninja Classes - Main character class archetypes
+ */
+const NINJA_CLASSES = {
+  "ninjutsuSpecialist": {
+    id: "ninjutsuSpecialist",
+    label: "Ninjutsu Specialist",
+    description: "A ninja who has dedicated their training to mastering ninjutsu techniques. They excel at manipulating chakra to perform powerful elemental and non-elemental jutsu.",
+    hitDie: "d8",
+    primaryAbility: "intelligence",
+    savingThrows: ["intelligence", "wisdom"],
+    skillChoices: 3,
+    skillOptions: ["arcana", "history", "insight", "investigation", "nature", "perception"],
+    features: {
+      1: ["chakraPool", "elementalAffinity", "jutsuCasting"],
+      2: ["chakraControl"],
+      3: ["subclass"],
+      5: ["extraJutsu"],
+      6: ["subclassFeature"],
+      9: ["advancedChakraControl"],
+      10: ["subclassFeature"],
+      14: ["subclassFeature"],
+      18: ["masteryJutsu"],
+      20: ["ultimateNinjutsu"]
+    },
+    subclasses: ["lightningBreaker", "flameWeaver", "aquaMaster", "earthShaper", "windCutter"]
+  }
+};
+
+/**
+ * Ninja Subclasses - Specializations within each class
+ */
+const NINJA_SUBCLASSES = {
+  "lightningBreaker": {
+    id: "lightningBreaker",
+    label: "Lightning Breaker",
+    parentClass: "ninjutsuSpecialist",
+    description: "Lightning Breakers harness the raw power of Raiton (Lightning Release) to devastating effect. They specialize in high-speed attacks and can channel electricity through their bodies to enhance their combat abilities.",
+    chakraNature: "lightning",
+    features: {
+      3: [{
+        name: "Lightning Affinity",
+        description: "You gain proficiency with Lightning Release jutsu. When you cast a lightning jutsu, you can add your Intelligence modifier to one damage roll of that jutsu. Additionally, you learn the Lightning Release: Spark cantrip if you don't already know it."
+      }],
+      6: [{
+        name: "Overcharge Mastery",
+        description: "When you use the Overcharge special mechanic on a lightning jutsu, you can choose to maximize the additional damage dice instead of rolling them. You can use this feature a number of times equal to your proficiency bonus, regaining all uses on a long rest."
+      }],
+      10: [{
+        name: "Static Shield",
+        description: "You can use your reaction when hit by a melee attack to deal 2d8 lightning damage to the attacker. Additionally, you gain resistance to lightning damage."
+      }],
+      14: [{
+        name: "Thunderclap Assault",
+        description: "When you hit a creature with a lightning jutsu, you can force it to make a Constitution saving throw against your jutsu save DC. On a failure, the creature is stunned until the end of your next turn. You can use this feature once per short or long rest."
+      }]
+    },
+    bonusJutsu: ["sparkJutsu", "lightningBolt", "chidori"]
+  }
+};
+
+/**
+ * Class feature definitions
+ */
+const CLASS_FEATURES = {
+  "chakraPool": {
+    name: "Chakra Pool",
+    description: "You have a pool of chakra points that you use to cast jutsu. Your chakra pool equals your class level + your Intelligence modifier (minimum of 1). You regain all spent chakra after a long rest."
+  },
+  "elementalAffinity": {
+    name: "Elemental Affinity",
+    description: "Choose a chakra nature (Fire, Water, Wind, Earth, or Lightning). You have advantage on learning jutsu of that element, and those jutsu cost 1 less chakra to cast (minimum 1)."
+  },
+  "jutsuCasting": {
+    name: "Jutsu Casting",
+    description: "You can cast jutsu using chakra points. Intelligence is your jutsu casting ability. Your jutsu save DC = 8 + your proficiency bonus + your Intelligence modifier. Your jutsu attack modifier = your proficiency bonus + your Intelligence modifier."
+  },
+  "chakraControl": {
+    name: "Chakra Control",
+    description: "You have learned to control your chakra more efficiently. Once per short rest, you can cast a jutsu of D-Rank or lower without spending chakra points."
+  },
+  "advancedChakraControl": {
+    name: "Advanced Chakra Control",
+    description: "Your Chakra Control feature now works with C-Rank jutsu or lower, and you can use it twice per short rest."
+  },
+  "extraJutsu": {
+    name: "Extra Jutsu",
+    description: "You learn two additional jutsu of your choice from any classification you have access to."
+  },
+  "masteryJutsu": {
+    name: "Jutsu Mastery",
+    description: "Choose one D-Rank and one C-Rank jutsu you know. You can cast these jutsu at their base rank without spending chakra."
+  },
+  "ultimateNinjutsu": {
+    name: "Ultimate Ninjutsu",
+    description: "You have achieved the pinnacle of ninjutsu mastery. Once per long rest, you can cast any S-Rank jutsu you know without spending chakra, and it deals maximum damage."
+  }
+};
+
+/**
  * Get the special mechanic for a jutsu based on its element or override
  * @param {Object} jutsuFlags - The naruto5e flags on the jutsu item
  * @returns {Object|null} The special mechanic configuration
@@ -270,7 +369,10 @@ Hooks.once('init', async function() {
     summoningAnimals: SUMMONING_ANIMALS,
     ninjaRanks: NINJA_RANKS,
     handSeals: HAND_SEALS,
-    chakra: CHAKRA_CONFIG
+    chakra: CHAKRA_CONFIG,
+    ninjaClasses: NINJA_CLASSES,
+    ninjaSubclasses: NINJA_SUBCLASSES,
+    classFeatures: CLASS_FEATURES
   };
 
   // Register custom Handlebars helpers
@@ -415,7 +517,7 @@ async function showWelcomeDialog() {
 
 /**
  * Hook to modify actor sheets
- * Adds chakra display and ninja-specific UI elements
+ * Adds chakra display, ninja class info, and jutsu management UI elements
  */
 Hooks.on('renderActorSheet', (app, html, data) => {
   if (!game.settings.get(MODULE_ID, 'useChakraSystem')) return;
@@ -425,7 +527,388 @@ Hooks.on('renderActorSheet', (app, html, data) => {
 
   // Add chakra-themed styling
   html.find('.sheet-header').addClass('naruto5e-header');
+
+  // Get or initialize ninja class data from actor flags
+  const ninjaData = actor.getFlag(MODULE_ID, 'ninjaData') || {
+    ninjaClass: null,
+    subclass: null,
+    chakraCurrent: 0,
+    chakraMax: 0,
+    knownJutsu: [],
+    elementalAffinity: null
+  };
+
+  // Inject Ninja Class Section into the character sheet
+  injectNinjaClassSection(html, actor, ninjaData);
+
+  // Inject Jutsu Management Section
+  injectJutsuSection(html, actor, ninjaData);
 });
+
+/**
+ * Inject ninja class information section into character sheet
+ */
+function injectNinjaClassSection(html, actor, ninjaData) {
+  // Find a good place to insert - after the header or in the features tab
+  const featuresTab = html.find('.tab[data-tab="features"], .sheet-body');
+
+  if (featuresTab.length === 0) return;
+
+  // Build class selection dropdown options
+  const classOptions = Object.entries(NINJA_CLASSES).map(([key, cls]) =>
+    `<option value="${key}" ${ninjaData.ninjaClass === key ? 'selected' : ''}>${cls.label}</option>`
+  ).join('');
+
+  // Build subclass dropdown options based on selected class
+  let subclassOptions = '<option value="">-- Select Subclass --</option>';
+  if (ninjaData.ninjaClass && NINJA_CLASSES[ninjaData.ninjaClass]) {
+    const availableSubclasses = NINJA_CLASSES[ninjaData.ninjaClass].subclasses || [];
+    subclassOptions += availableSubclasses.map(subKey => {
+      const sub = NINJA_SUBCLASSES[subKey];
+      if (!sub) return '';
+      return `<option value="${subKey}" ${ninjaData.subclass === subKey ? 'selected' : ''}>${sub.label}</option>`;
+    }).join('');
+  }
+
+  // Build elemental affinity dropdown
+  const affinityOptions = Object.entries(CHAKRA_NATURES).map(([key, nature]) =>
+    `<option value="${key}" ${ninjaData.elementalAffinity === key ? 'selected' : ''}>${nature.label}</option>`
+  ).join('');
+
+  // Get class and subclass descriptions
+  const selectedClass = NINJA_CLASSES[ninjaData.ninjaClass];
+  const selectedSubclass = NINJA_SUBCLASSES[ninjaData.subclass];
+
+  const classSection = `
+    <section class="naruto5e-class-section">
+      <h3 class="section-title">
+        <i class="fas fa-bolt"></i>
+        ${game.i18n.localize('NARUTO5E.NinjaClass')}
+      </h3>
+      <div class="naruto5e-class-content">
+        <div class="naruto5e-class-row">
+          <label>${game.i18n.localize('NARUTO5E.ClassSelect')}:</label>
+          <select class="ninja-class-select" data-field="ninjaClass">
+            <option value="">-- ${game.i18n.localize('NARUTO5E.SelectClass')} --</option>
+            ${classOptions}
+          </select>
+        </div>
+        ${selectedClass ? `
+          <div class="naruto5e-class-description">
+            <p><em>${selectedClass.description}</em></p>
+            <p><strong>${game.i18n.localize('NARUTO5E.HitDie')}:</strong> ${selectedClass.hitDie}</p>
+          </div>
+        ` : ''}
+        <div class="naruto5e-class-row">
+          <label>${game.i18n.localize('NARUTO5E.SubclassSelect')}:</label>
+          <select class="ninja-subclass-select" data-field="subclass" ${!ninjaData.ninjaClass ? 'disabled' : ''}>
+            ${subclassOptions}
+          </select>
+        </div>
+        ${selectedSubclass ? `
+          <div class="naruto5e-subclass-description">
+            <p><em>${selectedSubclass.description}</em></p>
+            <div class="subclass-features">
+              <strong>${game.i18n.localize('NARUTO5E.SubclassFeatures')}:</strong>
+              <ul>
+                ${Object.entries(selectedSubclass.features).map(([level, features]) =>
+                  features.map(f => `<li><strong>Lv ${level}:</strong> ${f.name}</li>`).join('')
+                ).join('')}
+              </ul>
+            </div>
+          </div>
+        ` : ''}
+        <div class="naruto5e-class-row">
+          <label>${game.i18n.localize('NARUTO5E.ElementalAffinity')}:</label>
+          <select class="ninja-affinity-select" data-field="elementalAffinity">
+            <option value="">-- ${game.i18n.localize('NARUTO5E.SelectAffinity')} --</option>
+            ${affinityOptions}
+          </select>
+        </div>
+        <div class="naruto5e-chakra-display">
+          <label>${game.i18n.localize('NARUTO5E.Chakra')}:</label>
+          <div class="chakra-inputs">
+            <input type="number" class="chakra-current" value="${ninjaData.chakraCurrent}" min="0" data-field="chakraCurrent" placeholder="Current">
+            <span>/</span>
+            <input type="number" class="chakra-max" value="${ninjaData.chakraMax}" min="0" data-field="chakraMax" placeholder="Max">
+          </div>
+          <div class="chakra-resource">
+            <div class="chakra-bar">
+              <div class="chakra-bar-fill" style="width: ${ninjaData.chakraMax > 0 ? (ninjaData.chakraCurrent / ninjaData.chakraMax * 100) : 0}%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  `;
+
+  // Insert at the beginning of features tab or sheet body
+  featuresTab.first().prepend(classSection);
+
+  // Add event listeners for the class/subclass selectors
+  html.find('.ninja-class-select').on('change', async (event) => {
+    const newClass = event.target.value;
+    await actor.setFlag(MODULE_ID, 'ninjaData', {
+      ...ninjaData,
+      ninjaClass: newClass || null,
+      subclass: null // Reset subclass when class changes
+    });
+  });
+
+  html.find('.ninja-subclass-select').on('change', async (event) => {
+    const newSubclass = event.target.value;
+    await actor.setFlag(MODULE_ID, 'ninjaData', {
+      ...ninjaData,
+      subclass: newSubclass || null
+    });
+  });
+
+  html.find('.ninja-affinity-select').on('change', async (event) => {
+    const newAffinity = event.target.value;
+    await actor.setFlag(MODULE_ID, 'ninjaData', {
+      ...ninjaData,
+      elementalAffinity: newAffinity || null
+    });
+  });
+
+  html.find('.chakra-current, .chakra-max').on('change', async (event) => {
+    const field = event.target.dataset.field;
+    const value = parseInt(event.target.value) || 0;
+    await actor.setFlag(MODULE_ID, 'ninjaData', {
+      ...ninjaData,
+      [field]: value
+    });
+  });
+}
+
+/**
+ * Inject jutsu management section into character sheet
+ */
+function injectJutsuSection(html, actor, ninjaData) {
+  // Find spells/features section to add jutsu display
+  const spellsTab = html.find('.tab[data-tab="spells"], .spellbook, .sheet-body');
+
+  if (spellsTab.length === 0) return;
+
+  // Get actor's spell items that have naruto5e flags (these are jutsu)
+  const jutsuItems = actor.items.filter(item =>
+    item.type === 'spell' && item.getFlag(MODULE_ID, 'classification')
+  );
+
+  // Group jutsu by classification
+  const jutsuByClass = {};
+  for (const jutsu of jutsuItems) {
+    const classification = jutsu.getFlag(MODULE_ID, 'classification') || 'ninjutsu';
+    if (!jutsuByClass[classification]) {
+      jutsuByClass[classification] = [];
+    }
+    jutsuByClass[classification].push(jutsu);
+  }
+
+  // Build jutsu list HTML
+  const jutsuListHtml = Object.entries(JUTSU_CLASSIFICATIONS).map(([classKey, classData]) => {
+    const jutsuInClass = jutsuByClass[classKey] || [];
+    return `
+      <div class="jutsu-classification-group">
+        <h4 class="jutsu-classification-header ${classKey}">
+          ${classData.label}
+          <span class="jutsu-count">(${jutsuInClass.length})</span>
+        </h4>
+        <ul class="jutsu-list">
+          ${jutsuInClass.length > 0 ? jutsuInClass.map(jutsu => {
+            const rank = jutsu.getFlag(MODULE_ID, 'rank') || 'e';
+            const nature = jutsu.getFlag(MODULE_ID, 'chakraNature') || 'non-elemental';
+            const chakraCost = jutsu.getFlag(MODULE_ID, 'chakraCost') || 0;
+            return `
+              <li class="jutsu-item" data-item-id="${jutsu.id}">
+                <div class="jutsu-item-name">
+                  <img src="${jutsu.img}" class="jutsu-icon" alt="${jutsu.name}">
+                  <span>${jutsu.name}</span>
+                </div>
+                <span class="jutsu-rank rank-${rank}">${JUTSU_RANKS[rank]?.label || rank}</span>
+                <span class="chakra-nature ${nature}">${CHAKRA_NATURES[nature]?.label || nature}</span>
+                <span class="jutsu-cost">${chakraCost} CP</span>
+                <button class="jutsu-use-btn" data-item-id="${jutsu.id}" title="${game.i18n.localize('NARUTO5E.ActionCast')}">
+                  <i class="fas fa-hand-sparkles"></i>
+                </button>
+              </li>
+            `;
+          }).join('') : `<li class="no-jutsu">${game.i18n.localize('NARUTO5E.NoJutsuLearned')}</li>`}
+        </ul>
+      </div>
+    `;
+  }).join('');
+
+  const jutsuSection = `
+    <section class="naruto5e-jutsu-section">
+      <h3 class="section-title">
+        <i class="fas fa-fire"></i>
+        ${game.i18n.localize('NARUTO5E.KnownJutsu')}
+      </h3>
+      <div class="jutsu-actions">
+        <button class="add-jutsu-btn">
+          <i class="fas fa-plus"></i>
+          ${game.i18n.localize('NARUTO5E.AddJutsu')}
+        </button>
+        <button class="open-compendium-btn">
+          <i class="fas fa-book"></i>
+          ${game.i18n.localize('NARUTO5E.BrowseJutsu')}
+        </button>
+      </div>
+      <div class="jutsu-list-container">
+        ${jutsuListHtml}
+      </div>
+    </section>
+  `;
+
+  // Insert jutsu section
+  spellsTab.first().prepend(jutsuSection);
+
+  // Event listeners for jutsu actions
+  html.find('.jutsu-use-btn').on('click', async (event) => {
+    event.preventDefault();
+    const itemId = event.currentTarget.dataset.itemId;
+    const item = actor.items.get(itemId);
+    if (item) {
+      // Use the item (cast the jutsu)
+      item.use();
+    }
+  });
+
+  html.find('.jutsu-item').on('click', (event) => {
+    if (event.target.closest('.jutsu-use-btn')) return;
+    const itemId = event.currentTarget.dataset.itemId;
+    const item = actor.items.get(itemId);
+    if (item) {
+      item.sheet.render(true);
+    }
+  });
+
+  html.find('.add-jutsu-btn').on('click', async (event) => {
+    event.preventDefault();
+    // Open dialog to create a new jutsu
+    openJutsuCreationDialog(actor);
+  });
+
+  html.find('.open-compendium-btn').on('click', async (event) => {
+    event.preventDefault();
+    // Open the jutsu compendium browser
+    openJutsuCompendiumBrowser();
+  });
+}
+
+/**
+ * Open a dialog to create a new jutsu for the actor
+ */
+async function openJutsuCreationDialog(actor) {
+  // Build classification options
+  const classificationOptions = Object.entries(JUTSU_CLASSIFICATIONS)
+    .map(([key, cls]) => `<option value="${key}">${cls.label}</option>`).join('');
+
+  // Build rank options
+  const rankOptions = Object.entries(JUTSU_RANKS)
+    .map(([key, rank]) => `<option value="${key}">${rank.label}</option>`).join('');
+
+  // Build nature options
+  const natureOptions = Object.entries(CHAKRA_NATURES)
+    .map(([key, nature]) => `<option value="${key}">${nature.label}</option>`).join('');
+
+  const content = `
+    <form class="naruto5e-jutsu-form">
+      <div class="form-group">
+        <label>${game.i18n.localize('NARUTO5E.JutsuName')}:</label>
+        <input type="text" name="name" required placeholder="e.g., Fire Release: Fireball Jutsu">
+      </div>
+      <div class="form-group">
+        <label>${game.i18n.localize('NARUTO5E.JutsuClassification')}:</label>
+        <select name="classification">${classificationOptions}</select>
+      </div>
+      <div class="form-group">
+        <label>${game.i18n.localize('NARUTO5E.JutsuRank')}:</label>
+        <select name="rank">${rankOptions}</select>
+      </div>
+      <div class="form-group">
+        <label>${game.i18n.localize('NARUTO5E.ChakraNature')}:</label>
+        <select name="chakraNature">${natureOptions}</select>
+      </div>
+      <div class="form-group">
+        <label>${game.i18n.localize('NARUTO5E.ChakraCost')}:</label>
+        <input type="number" name="chakraCost" value="0" min="0">
+      </div>
+      <div class="form-group">
+        <label>${game.i18n.localize('NARUTO5E.Description')}:</label>
+        <textarea name="description" rows="4" placeholder="Describe the jutsu's effects..."></textarea>
+      </div>
+    </form>
+  `;
+
+  const result = await foundry.applications.api.DialogV2.prompt({
+    window: { title: game.i18n.localize('NARUTO5E.CreateJutsu') },
+    content: content,
+    ok: {
+      label: game.i18n.localize('NARUTO5E.Create'),
+      icon: 'fas fa-check',
+      callback: (event, button, dialog) => {
+        const form = dialog.querySelector('form');
+        const formData = new FormData(form);
+        return Object.fromEntries(formData.entries());
+      }
+    }
+  });
+
+  if (result && result.name) {
+    // Create the jutsu item
+    const rank = result.rank || 'e';
+    const jutsuData = {
+      name: result.name,
+      type: 'spell',
+      img: CHAKRA_NATURES[result.chakraNature]?.icon || 'icons/magic/symbols/question-stone-yellow.webp',
+      system: {
+        level: JUTSU_RANKS[rank]?.level || 0,
+        school: 'evo',
+        description: {
+          value: result.description || ''
+        },
+        activation: {
+          type: 'action',
+          cost: 1
+        }
+      },
+      flags: {
+        [MODULE_ID]: {
+          classification: result.classification || 'ninjutsu',
+          rank: rank,
+          chakraNature: result.chakraNature || 'non-elemental',
+          chakraCost: parseInt(result.chakraCost) || JUTSU_RANKS[rank]?.baseCost || 0,
+          components: ['HS', 'CM'],
+          keywords: []
+        }
+      }
+    };
+
+    await actor.createEmbeddedDocuments('Item', [jutsuData]);
+    ui.notifications.info(`${game.i18n.localize('NARUTO5E.JutsuCreated')}: ${result.name}`);
+  }
+}
+
+/**
+ * Open the jutsu compendium browser
+ */
+function openJutsuCompendiumBrowser() {
+  // Try to open the compendium browser filtered to jutsu packs
+  const packs = game.packs.filter(p =>
+    p.metadata.system === 'dnd5e' &&
+    p.metadata.packageName === MODULE_ID &&
+    p.metadata.type === 'Item'
+  );
+
+  if (packs.length > 0) {
+    // Open the first jutsu pack
+    packs[0].render(true);
+  } else {
+    ui.notifications.info(game.i18n.localize('NARUTO5E.NoCompendiumsAvailable'));
+  }
+}
 
 /**
  * Hook to modify item sheets
@@ -522,7 +1005,12 @@ export {
   SUMMONING_ANIMALS,
   NINJA_RANKS,
   HAND_SEALS,
+  NINJA_CLASSES,
+  NINJA_SUBCLASSES,
+  CLASS_FEATURES,
   getSpecialMechanic,
   calculateChakraCost,
-  formatJutsuChat
+  formatJutsuChat,
+  openJutsuCreationDialog,
+  openJutsuCompendiumBrowser
 };
